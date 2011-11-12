@@ -1,0 +1,15 @@
+citHeader("To cite RRF in publications use:")
+
+
+			   
+ citEntry(entry="Article",
+         title = "Feature Selection via Regularized Trees",
+         author = personList(person(last="Deng", first="Houtao"),
+	                     person(last="Runger", first="George")),
+	 journal = "Technical Report",
+         year         = "2011",             
+         textVersion = 
+         paste("H. Deng and G. Runger (2011). ", 
+               "Feature Selection via Regularized Trees. ",
+               "Technical Report.",
+               sep=""))
