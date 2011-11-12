@@ -169,9 +169,9 @@ formula interface is not advised: There may be too much overhead in handling the
 }
 
 \references{
-  Houtao Deng and George C. Runger (2012), \emph{Gene Selection with Regularized Random Forest}, Technical Report.
+  Houtao Deng and George C. Runger (2012), \emph{Gene Selection with Guided Regularized Random Forest}, Technical Report.
   
-  Houtao Deng and George C. Runger (2012), \emph{Feature Selection via Regularized Trees}, arXiv:1201.1587.
+  Houtao Deng and George C. Runger (2012), \emph{Feature Selection via Regularized Trees}, the 2012 International Joint Conference on Neural Networks (IJCNN).
 }
 \author{Houtao Deng \email{softwaredeng@gmail.com}, based on the randomForest R package by Andy Liaw, Matthew Wiener, Leo Breiman and Adele Cutler.}
 

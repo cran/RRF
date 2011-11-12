@@ -1,2 +1,5 @@
 Version 1.0
-* This is the first version of the RRF package. 
+* this is the first version of the RRF package. 
+
+Version 1.2
+* test up to sqrt(P) variables in addition to the selected variables

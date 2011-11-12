@@ -251,8 +251,8 @@ c		if already use mtry random variables, then next; if not then plus1 new
          if (varUsedAll(mvar).eq.0 .and. mtryCounter .ge. mtry) then 
             CYCLE
          end if
-c         if (varUsedAll(mvar).eq.0) then		 
-         if (varUsedAll(mvar).ge.-1) then 
+c       when this variable not selected	yet or flagReg=0 so that the indicator variable is always 0	 
+         if (varUsedAll(mvar).eq.0) then 
             mtryCounter = mtryCounter + 1
          end if
 		 
