@@ -22,7 +22,7 @@
              proximity, oob.prox=proximity,
              norm.votes=TRUE, do.trace=FALSE,
              keep.forest=!is.null(y) && is.null(xtest), corr.bias=FALSE,
-             keep.inbag=FALSE,  coefReg=0.8, flagReg=1, ...)
+             keep.inbag=FALSE,  coefReg=NULL, flagReg=1, ...)
 \method{print}{RRF}(x, ...)
 }
 \arguments{
@@ -179,95 +179,67 @@ formula interface is not advised: There may be too much overhead in handling the
 #-----Example 1 -----
 library(RRF);set.seed(1)
 
-#only the first and last features are needed
-X=matrix(runif(200*500), ncol=500)
-class = (X[,1])^2 + (X[,500])^2  
+#only the first feature and last feature are truly useful
+X=matrix(runif(50*50), ncol=50)
+class = (X[,1])^2 + (X[,50])^2  
 class[class>median(class)]=1;class[class<=median(class)]=0
 
 #ordinary random forest. 
 rf <- RRF(X,as.factor(class), flagReg = 0)
 impRF=rf$importance
 impRF=impRF[,"MeanDecreaseGini"]
-x11();plot(impRF,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class), flagReg = 0)")
-#mark the first and last variables
-text(30, impRF[1], "V1", cex=1) 
-text(460, impRF[500], "V500", cex=1) 
+#x11();plot(impRF,xlab="variable index",ylab="importance")
+#title("RRF(X,as.factor(class), flagReg = 0)")
+##mark the first and last variables
 
-#regularized random forest without using the global importance
+
+#regularized random forest
 rrf <- RRF(X,as.factor(class))
 imp=rrf$importance
 imp=imp[,"MeanDecreaseGini"]
-x11();plot(imp,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class))")
-text(30, imp[1], "V1", cex=1) 
-text(460, imp[500], "V500", cex=1) 
+subsetRRF = which(imp>0)# indexes of the features selected by RRF
+#x11();plot(imp,xlab="variable index",ylab="importance")
+#title("RRF(X,as.factor(class))")
 
-#regularized random forest using the importance scores
+#guided regularized random forest
 #from ordinary random forest
 imp=impRF/(max(impRF))#normalize the importance score
-coefReg=0.9*0.8+0.1*imp #weighted average
+gamma = 0.5
+coefReg=(1-gamma)+gamma*imp #weighted average
 rrf <- RRF(X,as.factor(class),coefReg=coefReg)
 imp=rrf$importance
 imp=imp[,"MeanDecreaseGini"]
-x11();plot(imp,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class),coefReg=coefReg)")
-text(30, imp[1], "V1", cex=1) 
-text(460, imp[500], "V500", cex=1) 
-
-#smaller regularization coefficients 
-#eliminate more features 
-imp=impRF/(max(impRF))#normalize the importance score
-coefReg=0.9*0.5+0.1*imp #weighted average
-rrf <- RRF(X,as.factor(class),coefReg=coefReg)
-imp=rrf$importance
-imp=imp[,"MeanDecreaseGini"]
-x11();plot(imp,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class),coefReg=coefReg)")
-text(30, imp[1], "V1", cex=1) 
-text(460, imp[500], "V500", cex=1) 
-
-
-#setting a large mtry may eliminate more features 
-imp=impRF/(max(impRF))#normalize the importance score
-coefReg=0.9*0.8+0.1*imp #weighted average
-rrf <- RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)
-imp=rrf$importance
-imp=imp[,"MeanDecreaseGini"]
-x11();plot(imp,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)")
-text(30, imp[1], "V1", cex=1) 
-text(460, imp[500], "V500", cex=1) 
-
-
+subsetGRRF = which(imp>0) # indexes of the features selected by GRRF
+#x11();plot(imp,xlab="variable index",ylab="importance")
+#title("RRF(X,as.factor(class),coefReg=coefReg)")
 
 
 #-----Example 2 XOR learning-----
-set.seed(1)
+#set.seed(1)
 
 #only the first 3 features are needed
 #and each individual feature is not useful
-bSample = sample(0:1,20000,replace=TRUE)
-X=matrix(bSample,ncol=40)
-class = xor(xor(X[,1],X[,2]),X[,3])
+#bSample = sample(0:1,20000,replace=TRUE)
+#X=matrix(bSample,ncol=40)
+#class = xor(xor(X[,1],X[,2]),X[,3])
 
 #ordinary random forest. 
-rf <- RRF(X,as.factor(class), flagReg = 0,importance=TRUE)
-impRF=rf$importance
-impRF=impRF[,"MeanDecreaseAccuracy"] # can use gini decrease as well
-x11();plot(impRF,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class),flagReg = 0,importance=TRUE)")
+#rf <- RRF(X,as.factor(class), flagReg = 0,importance=TRUE)
+#impRF=rf$importance
+#impRF=impRF[,"MeanDecreaseAccuracy"] # can use gini decrease as well
+#x11();plot(impRF,xlab="variable index",ylab="importance")
+#title("RRF(X,as.factor(class),flagReg = 0,importance=TRUE)")
 
 
-#regularized random forest using the global importance
-#also setting a large mtry may eliminate more features
-imp=impRF/(max(impRF))#normalize the importance score
-coefReg=0.9*0.8+0.1*imp #weighted average
-rrf <- RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)
-imp=rrf$importance
-imp=imp[,"MeanDecreaseGini"]
-x11();plot(imp,xlab="variable index",ylab="importance")
-title("RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)")
+##regularized random forest using the global importance
+##also setting a large mtry may eliminate more features
+#imp=impRF/(max(impRF))#normalize the importance score
+#coefReg=0.9*0.8+0.1*imp #weighted average
+#rrf <- RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)
+#imp=rrf$importance
+#imp=imp[,"MeanDecreaseGini"]
+#x11();plot(imp,xlab="variable index",ylab="importance")
+#title("RRF(X,as.factor(class),mtry=ncol(X),coefReg=coefReg)")
 
 
 

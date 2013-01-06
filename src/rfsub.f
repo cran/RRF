@@ -285,11 +285,15 @@ c	  If regularization and not used, then regularize new
 c						varDebug(3) = flagReg
 c						varDebug(4) = varUsedAll(mvar)
 c						varDebug(5) = mvar
+c						in the following flagReg=1, the do not limit on existing var
+c						if flagReg=0, then coefReg is for guided RF
 					 if(flagReg.eq.1 .and. varUsedAll(mvar).eq.0)then 
-c						varDebug(5) = 9999
 						crit = coefReg(mvar)*crit
 						debug = 1
 					 end if
+					 if(flagReg.eq.0)then 
+						crit = coefReg(mvar)*crit
+					 end if					 
                      if (crit .gt. critmax) then
                         nbest = nsp
                         critmax = crit
@@ -332,7 +336,12 @@ c	 	    If regularization and not used, then regularize new
             if(flagReg.eq.1 .and. varUsedAll(mvar).eq.0) then 
 				  tempFlagReg = 1
 				  tempCoefReg = coefReg(mvar)
-            end if		
+            end if	
+c	 	    If flagReg=0, guided RF				
+            if(flagReg.eq.0) then 
+				  tempFlagReg = 1
+				  tempCoefReg = coefReg(mvar)
+            end if			
             if (nnz .gt. 1) then
                if (nclass .eq. 2 .and. lcat .gt. ncmax) then
                   call catmaxb(pdo, tclasscat, tclasspop, nclass,

@@ -49,15 +49,17 @@ pp. 334-343.
   \code{\link{RRF}}, \code{\link{importance}}
 }
 \examples{
-set.seed(647)
-myiris <- cbind(iris[1:4], matrix(runif(508 * nrow(iris)), nrow(iris), 508))
-result <- rrfcv(myiris, iris$Species)
-with(result, plot(n.var, error.cv, log="x", type="o", lwd=2))
+
 
 ## The following can take a while to run, so if you really want to try
 ## it, copy and paste the code into R.
 
 \dontrun{
+set.seed(647)
+myiris <- cbind(iris[1:4], matrix(runif(508 * nrow(iris)), nrow(iris), 508))
+result <- rrfcv(myiris, iris$Species)
+with(result, plot(n.var, error.cv, log="x", type="o", lwd=2))
+
 result <- replicate(5, rrfcv(myiris, iris$Species), simplify=FALSE)
 error.cv <- sapply(result, "[[", "error.cv")
 matplot(result[[1]]$n.var, cbind(rowMeans(error.cv), error.cv), type="l",

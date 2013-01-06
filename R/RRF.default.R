@@ -13,7 +13,7 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
              proximity, oob.prox=proximity,
              norm.votes=TRUE, do.trace=FALSE,
              keep.forest=!is.null(y) && is.null(xtest), corr.bias=FALSE,
-             keep.inbag=FALSE, coefReg=0.8,flagReg=1,...) {
+             keep.inbag=FALSE, coefReg=NULL,flagReg=1,...) {
     addclass <- is.null(y)
     classRF <- addclass || is.factor(y)
     if (!classRF && length(unique(y)) <= 5) {
@@ -21,11 +21,17 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
     }
     if (classRF && !addclass && length(unique(y)) < 2)
         stop("Need at least two classes to do classification.")
-    if (flagReg!=0 && flagReg!=1)stop("flagReg must be 0 or 1") #new
-	if (max(coefReg)>1)stop("coefReg can not be greater than 1") #new	
-	if (max(coefReg)<=0)stop("There should be a least one entry in coefReg greater than 0") #new
-	if (length(coefReg)!=1 && length(coefReg)!=ncol(x))stop("the length of coefReg must be 1 or the number of predictor variables") #new
-	if (length(coefReg)==1){coefReg=rep(coefReg,ncol(x))}
+	if (flagReg!=0 && flagReg!=1)stop("flagReg must be 0 or 1") #new
+	
+	if(is.null(coefReg) && flagReg==1){coefReg=rep(0.8,ncol(x))}
+	if(is.null(coefReg) && flagReg==0){coefReg=rep(1,ncol(x))}
+	
+	if(!is.null(coefReg)){
+		if (max(coefReg)>1)stop("coefReg can not be greater than 1") #new	
+		if (max(coefReg)<=0)stop("There should be a least one entry in coefReg greater than 0") #new
+		if (length(coefReg)!=1 && length(coefReg)!=ncol(x))stop("the length of coefReg must be 1 or the number of predictor variables") #new
+		if (length(coefReg)==1){coefReg=rep(coefReg,ncol(x))}	
+	}
 	
     n <- nrow(x)
     p <- ncol(x)
