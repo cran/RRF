@@ -46,7 +46,7 @@ void classRF(double *x, int *dimx, int *cl, int *ncl, int *cat, int *maxcat,
 	     int *nodeclass, double *xbestsplit, double *errtr,
 	     int *testdat, double *xts, int *clts, int *nts, double *countts,
 	     int *outclts, int *labelts, double *proxts, double *errts,
-             int *inbag, double *coefReg, int *flagReg0) {
+             int *inbag, double *coefReg, int *flagReg0, int *varUsedAll) {
     /******************************************************************
      *  C wrapper for random forests:  get input from R and drive
      *  the Fortran routines.
@@ -102,7 +102,7 @@ void classRF(double *x, int *dimx, int *cl, int *ncl, int *cat, int *maxcat,
 	*at, *a, *b, *mind, *nind, *jts, *oobpair;
     int **strata_idx, *strata_size, last, ktmp, anyEmpty, ntry;
 	
-	int *varUsedAll; // the variable used in all previous splits
+	//int *varUsedAll; // the variable used in all previous splits
 	
     double av=0.0;
 
@@ -162,7 +162,7 @@ void classRF(double *x, int *dimx, int *cl, int *ncl, int *cat, int *maxcat,
     ncase =         (int *) S_alloc(nsample, sizeof(int));
     jerr =          (int *) S_alloc(nsample, sizeof(int));
     varUsed =       (int *) S_alloc(mdim, sizeof(int));
-	varUsedAll =       (int *) S_alloc(mdim, sizeof(int));
+	//varUsedAll =       (int *) S_alloc(mdim, sizeof(int));
     jtr =           (int *) S_alloc(nsample, sizeof(int));
     jvr =           (int *) S_alloc(nsample, sizeof(int));
     classFreq =     (int *) S_alloc(nclass, sizeof(int));
@@ -179,7 +179,7 @@ void classRF(double *x, int *dimx, int *cl, int *ncl, int *cat, int *maxcat,
 	oobpair = (int *) S_alloc(near*near, sizeof(int));
     }
 	
-	zeroInt(varUsedAll, mdim);
+	//zeroInt(varUsedAll, mdim);
 	
     /* Count number of cases in each class. */
     zeroInt(classFreq, nclass);

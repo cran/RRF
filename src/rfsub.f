@@ -99,10 +99,10 @@ c     If the node is terminal, move on.  Otherwise, split.
 c         varDebug(11) = 1000			
 c         varDebug(12) = flagReg		
 c		mark the variable being splitted as 1; new		
-         if (flagReg .eq. 1) then	
+c1.5         if (flagReg .eq. 1) then	v1.5 so that varUsedAll can be used as indicating whether feature used
             varUsedAll(msplit) = 1	
 c            varDebug(10) = msplit				
-         endif			
+c         endif			
             iv(msplit) = 1
             if (decsplit .lt. 0.0) decsplit = 0.0
             tgini(msplit) = tgini(msplit) + decsplit
@@ -248,11 +248,19 @@ c	  do mt = 1, mtry  new use mred instead of mtry to include the variables new
          nn = nn - 1
          lcat = cat(mvar)
 c		if already use mtry random variables, then next; if not then plus1 new
-         if (varUsedAll(mvar).eq.0 .and. mtryCounter .ge. mtry) then 
+         if (flagReg.eq.1 .and.  varUsedAll(mvar).eq.0) then            ! v1.5 add flagReg as condition  
+            if (varUsedAll(mvar).eq.0 .and. mtryCounter .ge. mtry) then ! if flagReg and varUsed equal to 1, then continue
+              CYCLE                                                     
+            end if			
+            if (varUsedAll(mvar).eq.0 ) then 		 
+               mtryCounter = mtryCounter + 1
+            end if
+        end if
+		 
+         if (flagReg.ne.1 .and. mtryCounter .ge. mtry) then ! v1.5 if not flagReg, only split on mtry vars
             CYCLE
-         end if
-c       when this variable not selected	yet or flagReg=0 so that the indicator variable is always 0	 
-         if (varUsedAll(mvar).eq.0) then 
+         end if		 
+         if (flagReg.ne.1) then 
             mtryCounter = mtryCounter + 1
          end if
 		 

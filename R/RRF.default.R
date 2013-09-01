@@ -13,7 +13,7 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
              proximity, oob.prox=proximity,
              norm.votes=TRUE, do.trace=FALSE,
              keep.forest=!is.null(y) && is.null(xtest), corr.bias=FALSE,
-             keep.inbag=FALSE, coefReg=NULL,flagReg=1,...) {
+             keep.inbag=FALSE, coefReg=NULL,flagReg=1,feaIni=NULL, ...) {
     addclass <- is.null(y)
     classRF <- addclass || is.factor(y)
     if (!classRF && length(unique(y)) <= 5) {
@@ -43,8 +43,15 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
 	#print(length(coefReg));
 	#print(length(varUsedAll));
 	#print(length(varDebug));
-	
-	
+
+	varUsedAll = integer(p); # initialize p-entry vector
+	if(!is.null(feaIni)){
+	  feaIni <- round(unique(feaIni)) #remove redundant indices and only integer
+	  ixInvalid <- which(feaIni<0 | feaIni>p)
+	  if(length(ixInvalid)>0) feaIni <- feaIni[-ixInvalid] # remove invalid indices 
+	  if(length(feaIni)>0) varUsedAll[feaIni] <- 1 
+	}		
+
     ## overcome R's lazy evaluation:
     keep.forest <- keep.forest
 
@@ -281,7 +288,7 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
                     matrix(integer(n * ntree), n) else integer(n),
 					coefReg=as.double(coefReg), 
 					flagReg=as.integer(flagReg),
-					#varUsedAll=as.double(varUsedAll),
+					varUsedAll=as.integer(varUsedAll),
 					#varDebug=as.integer(varDebug),
                     DUP=FALSE,
                     PACKAGE="RRF")[-1]
@@ -380,7 +387,8 @@ mylevels <- function(x) if (is.factor(x)) levels(x) else 0
                     proximity = if(proximity) matrix(rfout$proxts, nrow=ntest,
                     dimnames = list(xts.row.names, c(xts.row.names,
                     x.row.names))) else NULL),
-                    inbag = if (keep.inbag) rfout$inbag else NULL)
+                    inbag = if (keep.inbag) rfout$inbag else NULL,
+					feaSet = which(rfout$varUsedAll>0))
 					#coefReg=rfout$coefReg,  # new
 					#flagReg=rfout$flagReg,
 					#varUsedAll=rfout$varUsedAll,					

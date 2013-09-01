@@ -22,7 +22,7 @@
              proximity, oob.prox=proximity,
              norm.votes=TRUE, do.trace=FALSE,
              keep.forest=!is.null(y) && is.null(xtest), corr.bias=FALSE,
-             keep.inbag=FALSE,  coefReg=NULL, flagReg=1, ...)
+             keep.inbag=FALSE,  coefReg=NULL, flagReg=1, feaIni=NULL,...)
 \method{print}{RRF}(x, ...)
 }
 \arguments{
@@ -100,6 +100,7 @@
   \item{coefReg}{the coefficient(s) of regularization. A smaller coefficient may lead to a smaller feature subset, i.e. there are fewer variables with non-zero importance scores. coefReg must be either a single value (all 
   variables have the same coefficient) or a numeric vector of length equal to the number of predictor variables. default: 0.8}
   \item{flagReg}{1: with regularization; 0: without regularization. default: 1}	
+  \item{feaIni}{initial feature subset, useful only when flagReg = 1}	  
   \item{...}{optional parameters to be passed to the low level function
     \code{RRF.default}.}
 }
@@ -148,7 +149,7 @@
     \code{RRF} is called, a matrix of proximity measures among
     the input (based on the frequency that pairs of data points are in
     the same terminal nodes).}
-
+  \item{feaSet}{features selected}
   \item{mse}{(regression only) vector of mean square errors: sum of squared
     residuals divided by \code{n}.}
   \item{rsq}{(regression only) ``pseudo R-squared'': 1 - \code{mse} /
@@ -169,7 +170,8 @@ formula interface is not advised: There may be too much overhead in handling the
 }
 
 \references{
-  Houtao Deng and George C. Runger (2012), \emph{Gene Selection with Guided Regularized Random Forest}, Technical Report.
+
+  Houtao Deng and George C. Runger (2013), \emph{Gene Selection with Guided Regularized Random Forest}, Pattern Recognition 46(12): 3483-3489.
   
   Houtao Deng and George C. Runger (2012), \emph{Feature Selection via Regularized Trees}, the 2012 International Joint Conference on Neural Networks (IJCNN).
 }
@@ -188,31 +190,23 @@ class[class>median(class)]=1;class[class<=median(class)]=0
 rf <- RRF(X,as.factor(class), flagReg = 0)
 impRF=rf$importance
 impRF=impRF[,"MeanDecreaseGini"]
-#x11();plot(impRF,xlab="variable index",ylab="importance")
-#title("RRF(X,as.factor(class), flagReg = 0)")
-##mark the first and last variables
-
+rf$feaSet
 
 #regularized random forest
 rrf <- RRF(X,as.factor(class))
-imp=rrf$importance
-imp=imp[,"MeanDecreaseGini"]
-subsetRRF = which(imp>0)# indexes of the features selected by RRF
-#x11();plot(imp,xlab="variable index",ylab="importance")
-#title("RRF(X,as.factor(class))")
+rrf$feaSet
 
 #guided regularized random forest
 #from ordinary random forest
 imp=impRF/(max(impRF))#normalize the importance score
 gamma = 0.5
 coefReg=(1-gamma)+gamma*imp #weighted average
-rrf <- RRF(X,as.factor(class),coefReg=coefReg)
-imp=rrf$importance
-imp=imp[,"MeanDecreaseGini"]
-subsetGRRF = which(imp>0) # indexes of the features selected by GRRF
-#x11();plot(imp,xlab="variable index",ylab="importance")
-#title("RRF(X,as.factor(class),coefReg=coefReg)")
+grrf <- RRF(X,as.factor(class),coefReg=coefReg, flagReg=1)
+grrf$feaSet
 
+#guided random forest
+grf <- RRF(X,as.factor(class),coefReg=coefReg, flagReg=0)
+grf$feaSet
 
 #-----Example 2 XOR learning-----
 #set.seed(1)
