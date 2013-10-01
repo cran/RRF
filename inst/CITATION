@@ -1,6 +1,16 @@
 citHeader("To cite RRF in publications use:")
 		
-	
+ citEntry(entry="Article",
+         title = "Guided Random Forest in the RRF Package",
+         author = personList(person(last="Deng", first="Houtao")),
+	 journal = "arXiv:1306.0237",
+         year         = "2013",      		 
+         textVersion = 
+         paste("H. Deng(2013). ", 
+               "Guided Random Forest in the RRF Package. ",
+               "arXiv:1306.0237.",
+               sep=""))		
+			   
  citEntry(entry="Article",
          title = "Gene Selection with Guided Regularized Random Forest",
          author = personList(person(last="Deng", first="Houtao"),
