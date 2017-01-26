@@ -4,6 +4,15 @@ export(combine, getTree, grow, importance, margin, MDSplot, na.roughfix,
        partialPlot, RRF, rrfImpute, treesize, tuneRRF,
        varImpPlot, varUsed, rrfNews, outlier, classCenter, rrfcv)
 
+importFrom("grDevices", "rainbow")
+importFrom("graphics", "axis", "barplot", "dotchart", "lines",
+             "matplot", "mtext", "pairs", "par", "plot", "plot.default",
+             "points")
+importFrom("stats", "delete.response", "mad", "median", "model.frame",
+             "model.response", "na.fail", "na.omit", "predict",
+             "quantile", "reformulate", "terms", "update", "var",
+             "weighted.mean")
+
 S3method(print, RRF)
 S3method(predict, RRF)
 S3method(plot, RRF)
