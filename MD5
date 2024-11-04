@@ -1,6 +1,6 @@
 393a5ca445f6965873eca0259a17f833 *COPYING
-ec06d4b403366c12d80c6ca339ea9854 *DESCRIPTION
-6affb6e619ece116473e8b0efc33dfbd *NAMESPACE
+7cfb78b828c5b5f908fdb9e74ec2faaf *DESCRIPTION
+5ccc6134da970f3b0f602cb8e9648427 *NAMESPACE
 6596dcd2b4ad42a0555ed8dcd2c50437 *NEWS
 324c18cc50ff5f27ca0cc44870b20457 *R/MDSplot.R
 dcd6c32cfa17356ca94555f340ac3050 *R/RRF.R
@@ -26,7 +26,7 @@ f4949244ff8edb90b36ab46a7a7de71b *R/print.RRF.R
 4fe70db7c7d1ddd3180992a7dcd4e0ec *R/varImpPlot.R
 ff212b917e30849239b8ad76e63c10e4 *R/varUsed.R
 50cee42101c50b1edaa0caf7decb6858 *R/zzz.R
-6d430e97b1da9c1b19eabda685c248b3 *data/imports85.rda
+c2c56a849b187e54307470cfa2b1da3d *data/imports85.rda
 f5ba17ec1d3c244fe37d8f5f3734809e *inst/CITATION
 6596dcd2b4ad42a0555ed8dcd2c50437 *inst/NEWS
 023d8946cb0c4a7641a5a952b14c861c *man/MDSplot.Rd
@@ -51,10 +51,10 @@ dc47031f4a65781f0c0a933d10b13304 *man/tuneRRF.Rd
 9112fa6ad82873e3ff2a35109c8b0087 *man/varImpPlot.Rd
 3554a63c2bf98b8b2b1943a92eb59033 *man/varUsed.Rd
 a491c1dca67246040766f47ad7870723 *src/RRF_init.c
-cef97db0c811fc354938f05148fa69a5 *src/classTree.c
-60d6d5c5e30fce4b8355fe9348789bea *src/regTree.c
+db573577e1eabc07d2a30ed4fe22aa56 *src/classTree.c
+267c5c8414f203e07bbc8f4e8e8e533f *src/regTree.c
 79016a2b4870baffabfd04cbe19e3c47 *src/regrf.c
 1ca317317bff739f9462b34df7a7d091 *src/rf.c
 925f77861c2de4ab069837cca2609455 *src/rf.h
 c7203c077a661ea74d2b9238d7bebde4 *src/rfsub.f
-59cc774ec29df4199e805d30bf31db6b *src/rfutils.c
+c42f498b8fc9b362f54965499c080954 *src/rfutils.c

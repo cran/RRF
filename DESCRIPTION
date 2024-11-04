@@ -1,6 +1,6 @@
 Package: RRF
 Title: Regularized Random Forest
-Version: 1.9.4
+Version: 1.9.4.1
 Date: 2022-05-30
 Depends: R (>= 2.5.0), stats
 Suggests: RColorBrewer, MASS
@@ -17,13 +17,13 @@ Description: Feature Selection with Regularized Random Forest. This
     and Adele Cutler, R port by Andy Liaw and Matthew Wiener, 
     Regularized random forest for classification by Houtao Deng, 
     Regularized random forest for regression by Xin Guan.
-    Reference: Houtao Deng (2013) <arXiv:1306.0237>.
+    Reference: Houtao Deng (2013) <doi:10.48550/arXiv.1306.0237>.
 Maintainer: Houtao Deng <softwaredeng@gmail.com>
 License: GPL (>= 2)
 URL: https://sites.google.com/site/houtaodeng/rrf
 Repository: CRAN
-Date/Publication: 2022-05-30 19:50:02 UTC
-Packaged: 2022-05-30 18:55:20 UTC; houtaodeng
+Date/Publication: 2024-11-04 18:35:21 UTC
+Packaged: 2024-11-04 17:49:15 UTC; hornik
 NeedsCompilation: yes
 RoxygenNote: 5.0.1
 Author: Houtao Deng [aut, cre],
